@@ -2,7 +2,7 @@ library(tidyverse)
 library(dplyr)
 library(lubridate)
 library(tidyr)
-
+library(ggplot2)
 ##Loading in data
 table1 <- read_csv("dailyActivity_merged.csv")
 table2 <- read_csv("dailyCalories_merged.csv")
@@ -95,10 +95,8 @@ colSums(is.na(combined_data_clean))
 head(combined_data_clean)
 
 ##Create visual to see trends
-install.packages("ggplot2")
-library(ggplot2)
 
-## Trend of TotalSteps over time for all users
+## Trend of Total Steps over time for all users
 
 ggplot(data = combined_data_clean, aes(x = ActivityDate, y = TotalSteps, group = id, color = as.factor(id))) +
   geom_line(alpha = 0.6) + # alpha makes lines slightly transparent if they overlap
@@ -143,3 +141,7 @@ ggplot(data = daily_avg_long, aes(x = ActivityDate, y = Value, color = Metric)) 
   scale_x_date(date_breaks = "1 week", date_labels = "%b %d") +
   # Optional: Use facet_wrap to put each metric on its own plot if scales are very different
   facet_wrap(~ Metric, scales = "free_y", ncol = 1) # 'free_y' allows each plot to have its own y-axis scale
+
+##Saving Final Table
+write_csv(daily_avg_steps, "Avg_Daily_Metrics.csv")
+write_csv(combined_data_clean, "combined_data_clean.csv")
